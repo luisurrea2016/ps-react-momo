@@ -29,11 +29,14 @@
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
+    "prismjs": "^1.8.1",
     "promise": "8.0.1",
     "react": "^16.0.0",
     "react-dev-utils": "^4.1.0",
     "react-dom": "^16.0.0",
+    "react-prism": "^4.3.1",
     "style-loader": "0.18.2",
+    "styled-components": "1.4.5",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.5.9",
     "webpack": "3.5.1",
@@ -42,9 +45,15 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "prestart": "npm run gen:docs",
+    "start": "npm-run-all --parallel start:docs gen:docs-watch",
+    "start:docs": "node scripts/start.js",
+    "gen:docs": "node scripts/generateComponentData.js",
+    "gen:docs-watch": "npm run gen:docs -- --watch",
+    "build:docs": "node scripts/build.js",
+    "test": "node scripts/test.js --env=jsdom",
+    "predeploy:docs": "npm run build:docs",
+    "deploy:docs": "gh-pages -d build"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -77,7 +86,8 @@
       "web.jsx",
       "jsx",
       "node"
-    ]
+    ],
+    "setupTestFrameworkScriptFile": "./src/setupTests.js"
   },
   "babel": {
     "presets": [
@@ -86,5 +96,16 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "chokidar": "^1.7.0",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.1",
+    "gh-pages": "0.12.0",
+    "npm-run-all": "^4.1.1",
+    "prop-types": "^15.6.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-docgen": "^2.18.0",
+    "react-test-renderer": "^16.0.0"
   }
 }
